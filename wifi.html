@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WiFi Puzzle Gateway</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .puzzle { background: #f5f5f5; padding: 20px; border-radius: 10px; }
+        input[type="text"] { padding: 10px; margin: 10px; width: 100px; }
+        button { padding: 10px 20px; background: #007cba; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .success { background: #d4edda; padding: 20px; border-radius: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <!-- Puzzle Screen -->
+    <div id="puzzleScreen">
+        <h1>🎯 WiFi Access Challenge</h1>
+        <div class="puzzle">
+            <h3>Solve this riddle:</h3>
+            <p>"I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?"</p>
+            <input type="text" id="riddleAnswer" placeholder="Your answer">
+            <button onclick="checkRiddle()">Submit Answer</button>
+        </div>
+        
+        <div class="puzzle" id="quetion" style="display:none; margin-top: 20px;">
+            <h3>Final Challenge:</h3>
+            <p>what is our dog's name.</p>
+            <input type="text" id="quetion" placeholder="Enter result">
+            <button onclick="checkQuetion()">Get WiFi Access</button>
+        </div>
+    </div>
+
+    <!-- Success Screen -->
+    <div id="successScreen" class="hidden">
+        <div class="success">
+            <h1>✅ Access Granted!</h1>
+            <h3>Your WiFi Credentials:</h3>
+            <div id="qrCode"></div>
+            <p><em>You now have full internet access!</em></p>
+        </div>
+    </div>
+
+    <script>
+    function checkRiddle() {
+        const answer = document.getElementById('riddleAnswer').value.toLowerCase();
+        if(answer === 'echo') {
+            document.getElementById('quetion').style.display = 'block';
+        } else {
+            alert('Not quite! Think about something that repeats sounds...');
+        }
+    }
+
+    function checkQuetion() {
+        const answer = document.getElementById('quetion').value;
+        if(answer === 'cody','cody') {
+            document.getElementById('puzzleScreen').classList.add('hidden');
+            document.getElementById('successScreen').classList.remove('hidden');
+            generateQRCode();
+            // In a real captive portal, you'd authenticate the user here
+        } else {
+            alert('Incorrect answer. think again!');
+        }
+    }
+
+    function generateQRCode() {
+        const qrDiv = document.getElementById('qrCode');
+        const ssid = 'peepers Guest';
+        const password = '@#$&*123';
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=WIFI:S:${ssid};T:WPA;P:${password};;`;
+        qrDiv.innerHTML = `<img src="${qrUrl}" alt="WiFi QR Code"><p>Scan to connect automatically</p>`;
+    }
+    </script>
+</body>
+</html>
